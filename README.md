@@ -3,12 +3,12 @@ Caml Light kernel for Jupyter
 
 ## Installation
 
-* Install camlkernel module
+* Install the camlkernel module
 ```
 python setup.py install
 ```
 
-* Add kernel to jupyter
+* Add the kernel to jupyter
 ```
 jupyter kernelspec install --name caml-kernel `pwd`
 ```
