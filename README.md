@@ -1,7 +1,10 @@
 # ICaml
 Caml Light kernel for Jupyter
 
-## Installation
+## 
+* Install Caml Light
+
+https://doc.ubuntu-fr.org/caml_light
 
 * Install the camlkernel module
 ```
