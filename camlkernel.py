@@ -22,7 +22,7 @@ class CamlKernel(Kernel):
                 {
                     "name": "mllike"
                 },
-            "mimetype": "text/x-iocaml"
+            "mimetype": "text/x-ocaml"
         }
     banner = "Caml Light banner"
 
