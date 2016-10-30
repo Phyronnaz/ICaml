@@ -13,6 +13,5 @@ python setup.py install
 
 * Add the kernel to jupyter
 ```
-jupyter kernelspec install --name caml-kernel `pwd`
+jupyter kernelspec install --name caml-kernel ICaml
 ```
-**Important** we use pwd command so we should be in the icaml source directory!
