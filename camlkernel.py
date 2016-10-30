@@ -40,11 +40,14 @@ class CamlKernel(Kernel):
             self.caml_child = pexpect.spawnu("/usr/bin/camllight -g")
             self.caml_child.expect('\r\n')
             self.caml_child.maxread = 10 ** 6
+            self.count = 0
 
         if code.rstrip()[-2:] != ";;":
             code += ";"
             if code.rstrip()[-2:] != ";;":
                 code += ";"
+                
+        self.count += 1
 
         self.caml_child.sendline(code + " \n print_char (char_of_int 126);;")
         self.caml_child.expect("#~- : unit = ()")
@@ -52,10 +55,10 @@ class CamlKernel(Kernel):
         if not silent:
             stream_content = {'name': 'stdout', 'text': self.get_output()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
-
+	
         return {'status': 'ok',
                 # The base class increments the execution count
-                'execution_count': self.execution_count,
+                'execution_count': self.count,
                 'payload': [],
                 'user_expressions': {},
                 }
