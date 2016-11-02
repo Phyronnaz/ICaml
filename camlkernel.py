@@ -49,7 +49,7 @@ class CamlKernel(Kernel):
                 
         self.count += 1
 
-        self.caml_child.sendline(code + " \n print_char (char_of_int 126);;")
+        self.caml_child.sendline(code + " \n print_char (char_of_int 126);;\n")
         self.caml_child.expect("#~- : unit = ()")
 
         if not silent:
