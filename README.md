@@ -11,9 +11,9 @@ https://doc.ubuntu-fr.org/caml_light
 git clone https://github.com/Phyronnaz/ICaml.git
 ```
 
-* Install the camlkernel module
+* Install the camlkernel module (replace python with python3 if jupyter has been installed with it)
 ```
-python setup.py ICaml/
+python ICaml/setup.py install
 ```
 
 * Add the kernel to jupyter
