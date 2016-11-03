@@ -42,7 +42,7 @@ class CamlKernel(Kernel):
             self.caml_child.maxread = 10 ** 6
             self.count = 0
 
-        if code.rstrip()[-2:] != ";;":
+        if code.rstrip()[-2:] not in [";;", "*)"]:
             code += ";"
             if code.rstrip()[-2:] != ";;":
                 code += ";"
