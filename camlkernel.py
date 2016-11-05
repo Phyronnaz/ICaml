@@ -27,35 +27,47 @@ class CamlKernel(Kernel):
     banner = "Caml Light banner"
 
     def get_output(self):
-        l = self.caml_child.before.split("print_char (char_of_int 126);;")[1].replace("\r\n#", "\r\n").split('\r\n')
-        r = l[0]
-        if len(l) > 1:
-            r = l[1]
-            for s in l[2:-1]:
-                r += "\r\n" + s
-        return r
+        try:
+            self.caml_child.logfile_read.seek(0)
+            s = self.caml_child.logfile_read.read()
+            l = s.replace("\r\n#", "\r\n").split("print_char (char_of_int 127) ;;")[1].split("- : unit = ()")[0]
+            self.caml_child.logfile_read.close()
+            self.caml_child.logfile_read = io.StringIO()
+            return l
+        except Exception as inst:
+            print(type(inst))
+            print(inst.args)
+            print(inst)
+            try:
+                print(self.caml_child.logfile_read.read())
+            except Exception as inst:
+                print(type(inst))
+                print(inst.args)
+                print(inst)
 
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
         if not hasattr(self, "caml_child"):
-            self.caml_child = pexpect.spawnu("/usr/bin/camllight -g")
-            self.caml_child.expect('\r\n')
-            self.caml_child.maxread = 10 ** 6
             self.count = 0
+            self.caml_child = pexpect.spawnu("/usr/bin/camllight -g", maxread=100000, searchwindowsize=100,
+                                             timeout=None)
+            self.caml_child.logfile_read = io.StringIO()
+
+        self.count += 1
 
         if code.rstrip()[-2:] not in [";;", "*)"]:
             code += ";"
             if code.rstrip()[-2:] != ";;":
                 code += ";"
-                
-        self.count += 1
 
-        self.caml_child.sendline(code + " \n print_char (char_of_int 126);;\n")
-        self.caml_child.expect("#~- : unit = ()")
+        code += '\nprint_char (char_of_int 127) ;;'
+
+        self.caml_child.sendline(code)
+        self.caml_child.expect(chr(127))
 
         if not silent:
             stream_content = {'name': 'stdout', 'text': self.get_output()}
             self.send_response(self.iopub_socket, 'stream', stream_content)
-	
+
         return {'status': 'ok',
                 # The base class increments the execution count
                 'execution_count': self.count,
