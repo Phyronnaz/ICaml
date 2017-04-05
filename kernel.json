@@ -1,4 +1,4 @@
 {
-"argv":["python3.5","-m","camlkernel", "-f", "{connection_file}"],
+"argv":["python3","-m","camlkernel", "-f", "{connection_file}"],
  "display_name":"Caml Light"
 }
